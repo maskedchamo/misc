@@ -71,11 +71,12 @@ define_models_SDXL() {
 
 define_models_FLUX() {
     MODELS=(
-        "https://huggingface.co/city96/FLUX.1-dev-gguf/resolve/main/flux1-dev-Q8_0.gguf:diffusion_models"
         "https://huggingface.co/Shakker-Labs/FLUX.1-dev-ControlNet-Union-Pro/resolve/main/diffusion_pytorch_model.safetensors:controlnet"
-        "https://huggingface.co/StableDiffusionVN/Flux/resolve/main/Vae/flux_vae.safetensors:vae"
-        "https://huggingface.co/city96/t5-v1_1-xxl-encoder-gguf/resolve/main/t5-v1_1-xxl-encoder-Q8_0.gguf:text_encoders"
-        "https://huggingface.co/QuantStack/FLUX.1-Kontext-dev-GGUF/resolve/main/flux1-kontext-dev-Q8_0.gguf:unet"
+        "https://huggingface.co/black-forest-labs/FLUX.1-dev/resolve/main/flux1-dev.safetensors:unet"
+        "https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/flux1-kontext-dev.safetensors:unet"
+        "https://huggingface.co/black-forest-labs/FLUX.1-Kontext-dev/resolve/main/ae.safetensors:vae"
+        "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/t5xxl_fp16.safetensors:text_encoders"
+        "https://huggingface.co/comfyanonymous/flux_text_encoders/resolve/main/clip_l.safetensors:text_encoders"
     )
 }
 
