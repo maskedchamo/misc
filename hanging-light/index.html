@@ -16,12 +16,13 @@
 </head>
 <body>
 <model-viewer id="mv" src="pendant-seed4487-AR.glb" alt="Hanging light pendant"
-  camera-controls ar ar-modes="scene-viewer webxr" ar-scale="fixed" ar-placement="floor"
+  camera-controls ar ar-modes="webxr scene-viewer" ar-scale="fixed" ar-placement="floor"
   camera-orbit="30deg 80deg auto" shadow-intensity="0"></model-viewer>
 <div class="wrap">
   <a class="btn" id="sv">1. Open in AR (Scene Viewer, real scale)</a>
   <a class="btn alt" id="sv2">2. Backup: open through the Google app</a>
-  <a class="btn alt" href="#" onclick="document.getElementById('mv').activateAR();return false;">3. Backup: AR inside Chrome</a>
+  <a class="btn alt" href="#" id="wx">3. Backup: AR inside Chrome (WebXR)</a>
+  <p id="status" style="font-size:14px;color:#bbb">Checking this phone…</p>
   <ol>
     <li>Point the camera at the floor and move it slowly until the floor is detected, then tap to place.</li>
     <li>Drag until the red cross is under the current ceiling fixture.</li>
@@ -32,8 +33,23 @@
 <script>
   const file = encodeURIComponent('https://raw.githubusercontent.com/maskedchamo/misc/hanging-light-ar/hanging-light/pendant-seed4487-AR.glb');
   const base = 'intent://arvr.google.com/scene-viewer/1.0?file=' + file + '&resizable=false&title=Hanging%20light';
-  document.getElementById('sv').href = base + '&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;';
-  document.getElementById('sv2').href = base + '#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;end;';
+  const store = encodeURIComponent('https://play.google.com/store/apps/details?id=com.google.ar.core');
+  document.getElementById('sv').href = base + '&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;S.browser_fallback_url=' + store + ';end;';
+  document.getElementById('sv2').href = base + '#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;S.browser_fallback_url=' + store + ';end;';
+  const mv = document.getElementById('mv'), st = document.getElementById('status');
+  const lines = [];
+  const show = () => { st.textContent = lines.join(' · '); };
+  if (navigator.xr) {
+    navigator.xr.isSessionSupported('immersive-ar').then(ok => { lines.push('WebXR AR: ' + (ok ? 'yes' : 'no')); show(); })
+      .catch(e => { lines.push('WebXR AR check failed: ' + e.message); show(); });
+  } else { lines.push('WebXR: not available'); show(); }
+  mv.addEventListener('load', () => { lines.push('model loaded'); lines.push('AR possible: ' + (mv.canActivateAR ? 'yes' : 'no')); show(); });
+  mv.addEventListener('ar-status', e => { lines.push('AR status: ' + e.detail.status); show(); });
+  document.getElementById('wx').addEventListener('click', ev => {
+    ev.preventDefault();
+    try { mv.activateAR(); lines.push('AR requested'); } catch (e) { lines.push('AR error: ' + e.message); }
+    show();
+  });
 </script>
 </body>
 </html>
