@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hanging light – AR test</title>
+<script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js"></script>
+<style>
+  body { margin: 0; font: 16px/1.4 system-ui, sans-serif; background: #1d1d20; color: #eee; }
+  model-viewer { width: 100%; height: 55vh; background: #2a2a2e; }
+  .wrap { padding: 16px; }
+  a.btn { display: block; margin: 10px 0; padding: 14px; border-radius: 10px; background: #3b6fd8; color: #fff; text-align: center; text-decoration: none; font-weight: 600; }
+  a.btn.alt { background: #444; }
+  ol { padding-left: 20px; }
+</style>
+</head>
+<body>
+<model-viewer id="mv" src="pendant-seed4487-AR.glb" alt="Hanging light pendant"
+  camera-controls ar ar-modes="scene-viewer webxr" ar-scale="fixed" ar-placement="floor"
+  camera-orbit="30deg 80deg auto" shadow-intensity="0"></model-viewer>
+<div class="wrap">
+  <a class="btn" id="sv">1. Open in AR (Scene Viewer, real scale)</a>
+  <a class="btn alt" id="sv2">2. Backup: open through the Google app</a>
+  <a class="btn alt" href="#" onclick="document.getElementById('mv').activateAR();return false;">3. Backup: AR inside Chrome</a>
+  <ol>
+    <li>Point the camera at the floor and move it slowly until the floor is detected, then tap to place.</li>
+    <li>Drag until the red cross is under the current ceiling fixture.</li>
+    <li>Twist with two fingers until the end bar of the red line touches the chimney wall (0.60 m).</li>
+    <li>Check: the white box should sit flush against the ceiling. If it floats or goes through, rescan the floor and place again.</li>
+  </ol>
+</div>
+<script>
+  const file = encodeURIComponent('https://raw.githubusercontent.com/maskedchamo/misc/hanging-light-ar/hanging-light/pendant-seed4487-AR.glb');
+  const base = 'intent://arvr.google.com/scene-viewer/1.0?file=' + file + '&resizable=false&title=Hanging%20light';
+  document.getElementById('sv').href = base + '&mode=ar_only#Intent;scheme=https;package=com.google.ar.core;action=android.intent.action.VIEW;end;';
+  document.getElementById('sv2').href = base + '#Intent;scheme=https;package=com.google.android.googlequicksearchbox;action=android.intent.action.VIEW;end;';
+</script>
+</body>
+</html>
